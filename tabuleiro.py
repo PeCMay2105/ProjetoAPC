@@ -7,7 +7,7 @@ backgorund_color = (192,217,217)
 cor_preta = (0,0,0)
 ################
 def gerador_de_fonte(nome_da_fonte,tamanho):
-    fonte = pygame.font.Font(nome_da_fonte,tamanho)
+    fonte = pygame.font.SysFont(nome_da_fonte,tamanho,True,True)
     return fonte
 
 def gerador_de_texto(texto,fonte,cor): 
