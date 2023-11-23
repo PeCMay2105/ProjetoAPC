@@ -15,10 +15,11 @@ def gerador_de_texto(texto,fonte,cor):
     text = fonte.render(texto,True,cor)
     return text
 
-def gerador_de_superficie(largura,altura,tamanho):
-    superficie = pygame.display.set_mode((largura*tamanho,altura*tamanho))
+def gerador_de_superficie(largura,altura):
+    superficie = pygame.display.set_mode((largura,altura))
     return superficie
 
-def gerador_de_mapa(surface):
-    pygame.draw.rect(surface, backgorund_color, pygame.Rect(30, 30, 60, 60))
+def gerador_de_mapa(surface,largura,altura,pixels_por_unidade):
+    mapa = pygame.draw.rect(surface, backgorund_color, pygame.Rect(0, 30, largura*pixels_por_unidade, altura*pixels_por_unidade))
     pygame.display.flip()
+    return mapa
