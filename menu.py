@@ -31,3 +31,12 @@ def configuracoes(superficie,posicaoX,PosicaoY):
     superficie.blit(medio,(posicaoX-250,PosicaoY+100))
     superficie.blit(dificil,(posicaoX-250,PosicaoY+150))
     display.flip()
+
+
+def ranking(superficie,posicaoX,PosicaoY):
+    fonte_titulo = tabuleiro.gerador_de_fonte("Monospace",50)
+    fonte_subtitulo = tabuleiro.gerador_de_fonte("Monospace",40)
+    fonte = tabuleiro.gerador_de_fonte("Monospace",20)
+    texto = tabuleiro.gerador_de_texto("Configurações",fonte_titulo,(105,85,205))
+    texto_dificuldade = tabuleiro.gerador_de_texto("Selecione a dificuldade",fonte_subtitulo,(105,85,205))
+    display.flip()
