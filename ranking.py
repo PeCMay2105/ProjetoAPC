@@ -1,16 +1,19 @@
 
 def storeScore(pontuacao):
-    with open("score.txt","w") as arquivo:
-        arquivo.write(pontuacao)
+    with open("score.txt","a") as arquivo:
+       pontuacao = str(pontuacao) + "\n"
+       arquivo.write(pontuacao)
 
 
 def readScore():
-    lista_pontos = []
+    lista_pontuacao = []
     with open("score.txt","r") as arquivo:
-        pontuacao = arquivo.read()
-        for item in pontuacao:
-            lista_pontos.append(item)
-    return ("pontuação: " + pontuacao)
+        pontuacao = arquivo
+        for item in pontuacao:  
+            try:
+                lista_pontuacao.append((int(item.strip())))
+            except ValueError:
+                print(ValueError)
+    return sorted(lista_pontuacao,reverse = True)
 
-
-print("pontuação: "+readScore())
+print(readScore())

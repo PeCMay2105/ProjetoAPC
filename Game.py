@@ -42,17 +42,21 @@ def Game_over():
                     exit()
 
 def Ranking():
-  
-    fonte_options = tabuleiro.gerador_de_fonte("Monospace",50)
-    option1 = fonte_options.render("1 - Tentar novamente",True,(255,0,0))
+    fonte_titulo = tabuleiro.gerador_de_fonte("Monospace",50)
+    fonte_options = tabuleiro.gerador_de_fonte("Monospace",25)
     variador_de_posicao = 0
+    titulo_ranking = fonte_titulo.render("RANKING - MAIOR PARA O MENOR",True,(255,0,0))
+    tela.blit(titulo_ranking,(largura_janela//10,40))
+    for i in readScore():
+            variador_de_posicao += 50
+            print(i)
+            item_ranking = fonte_options.render(str(i),True,(255,0,0))
+            tela.blit(item_ranking, (largura_janela // 2 - 75, (altura_janela // 4)+ variador_de_posicao))
+            pygame.display.flip()
     pygame.display.flip()
+    
     while state == "ranking":
         
-        variador_de_posicao +=50
-        item_ranking = fonte_options.render(readScore(),True,(255,0,0))
-        tela.blit(item_ranking, (largura_janela // 2 - 75, (altura_janela // 2-10)+ variador_de_posicao))
-        pygame.display.flip()
         for event in pygame.event.get():
             if event.type == QUIT:
                 pygame.quit()
