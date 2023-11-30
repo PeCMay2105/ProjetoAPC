@@ -10,9 +10,32 @@ pygame.init()
 
 # funções
 
+def Menu():
+    global state
+    state = True
+    while state == True:
+    
+        menu.Menu(tela,["0 - Jogar","1 - Configurações","2 - Instruções","3 - Ranking"],400,240)
+        pygame.display.flip()
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                exit()
+            if event.type == KEYDOWN:
+                if event.key == K_0:
+                    state = False
+                if event.key == K_1:
+                    tela.fill((0,0,0))
+                    state = "Config"
+                if event.key == K_3:
+                    tela.fill((0,0,0))
+                    state = "ranking"
+                    Ranking()
+
 
 def Game_over():
     global game_over
+    global state
     global state_main_loop
     print("função game over está funcionando")
     # Exibe mensagem de game over na tela
@@ -20,8 +43,10 @@ def Game_over():
     fonte_options = tabuleiro.gerador_de_fonte("Monospace",25)
     mensagem_game_over = fonte_game_over.render("Game Over", True, (255, 0, 0))
     option1 = fonte_options.render("1 - Tentar novamente",True,(255,0,0))
+    option3 = fonte_options.render("2 - Ranking",True,(255,0,0))
     option2 = fonte_options.render("0 - sair",True,(255,0,0))
     tela.blit(mensagem_game_over, (largura_janela // 2 - 100, altura_janela // 2 - 50))
+    tela.blit(option3,(largura_janela // 2 - 75, altura_janela // 2+50))
     tela.blit(option2, (largura_janela // 2 - 75, altura_janela // 2-10))
     tela.blit(option1, (largura_janela // 2 - 75, altura_janela // 2 + 20))
     pygame.display.flip()
@@ -36,16 +61,25 @@ def Game_over():
                 if event.key == K_1:
                     tela.fill((0,0,0))
                     reiniciar_jogo()
-                    return  
+                    return
+                elif event.key == K_2:
+                    tela.fill((0,0,0))
+                    state = "ranking"
+                    Ranking() 
                 elif event.key == K_0:
                     pygame.quit()
                     exit()
 
 def Ranking():
+    global state
     fonte_titulo = tabuleiro.gerador_de_fonte("Monospace",50)
     fonte_options = tabuleiro.gerador_de_fonte("Monospace",25)
     variador_de_posicao = 0
     titulo_ranking = fonte_titulo.render("RANKING - MAIOR PARA O MENOR",True,(255,0,0))
+    menu = fonte_options.render("0- Menu",True,(255,0,0))
+    sair = fonte_options.render("1- Sair",True,(255,0,0))
+    tela.blit(menu, (largura_janela // 2 + 100, altura_janela // 2 - 50))
+    tela.blit(sair,(largura_janela // 2 + 75, altura_janela // 2+50))
     tela.blit(titulo_ranking,(largura_janela//10,40))
     for i in readScore():
             variador_de_posicao += 50
@@ -61,6 +95,12 @@ def Ranking():
             if event.type == QUIT:
                 pygame.quit()
                 exit()
+            if event.type == KEYDOWN:
+                if event.key == K_0:
+                    state = True
+                if event.key == K_1:
+                    pygame.quit()
+                    exit()
 
 def reiniciar_jogo():
     #Variaveis globais:
@@ -97,7 +137,7 @@ def reiniciar_jogo():
     global velocidade_tanque_de_combustivel
     posicao_x_tanque = random.randrange(475,950)
     posicao_y_tanque = altura_janela/random.randrange(1,150)
-    velocidade_tanque_de_combustivel = 0.5
+    velocidade_tanque_de_combustivel = 2
 
     ### inimigos
     global inimigos
@@ -179,7 +219,13 @@ def aparicao_objetos():
    if random.randint(0, 10) > 2:
         novo_inimigo = {"posx": 940, "posy": random.randint(50, altura_janela - altura_inimigo), "altura": altura_inimigo, "largura": largura_inimigo}
         if all(elementos.distancia_minima(novo_inimigo, inimigo, distancia_minima_entre_objetos) for inimigo in inimigos):
-            inimigos.append(novo_inimigo)
+            if len(inimigos) < 20:
+                inimigos.append(novo_inimigo)
+            else:
+                inimigos.append(novo_inimigo)
+                inimigos.remove(inimigos[len(inimigos)-1])
+
+            
    elif random.randint(0, 10)> 8:
         novo_tanque = {"posx": 940, "posy": random.randint(50, altura_janela - altura_inimigo), "altura": altura_avatar, "largura": largura_avatar}
         if all(elementos.distancia_minima(novo_tanque, tanque_de_combustivel, distancia_minima_entre_objetos) for tanque_de_combustivel in tanques):
@@ -204,7 +250,7 @@ distancia_minima_entre_objetos = 100
 tanques = []
 posicao_x_tanque = random.randrange(475,950)
 posicao_y_tanque = altura_janela/random.randrange(1,150)
-velocidade_tanque_de_combustivel = 0.5
+velocidade_tanque_de_combustivel = 2
 
 ### inimigos
 inimigos = []
@@ -232,24 +278,7 @@ vel_projetil = 7
 tela = tabuleiro.gerador_de_superficie(largura_janela,altura_janela)
 state = True #condição para o loop de menu funcionar
 #loop Menu
-while state == True:
-    
-    menu.Menu(tela,["0 - Jogar","1 - Configurações","2 - Instruções","3 - Ranking"],400,240)
-    pygame.display.flip()
-    for event in pygame.event.get():
-        if event.type == QUIT:
-            pygame.quit()
-            exit()
-        if event.type == KEYDOWN:
-            if event.key == K_0:
-                state = False
-            if event.key == K_1:
-                tela.fill((0,0,0))
-                state = "Config"
-            if event.key == K_3:
-                tela.fill((0,0,0))
-                state = "ranking"
-                Ranking()
+Menu()
             
 while state == "Config":
     menu.configuracoes(tela,400,240)
@@ -293,6 +322,9 @@ while state_main_loop == True:
     gera_avatar()
 
     for inimigo in inimigos:
+        if inimigo["posx"] < 5:
+            inimigos.remove(inimigo)
+            print("inimigo removido")
         elementos.desenha_quadrado(tela,(255,0,0),inimigo["posx"],inimigo["posy"],inimigo["largura"],inimigo["altura"])
         print("inimigo desenhado")
         if elementos.verifica_colisao_entre_rects(retangulo_referencia_A, pygame.Rect(inimigo["posx"], inimigo["posy"], inimigo["largura"], inimigo["altura"])):
@@ -310,7 +342,8 @@ while state_main_loop == True:
         elementos.desenha_quadrado(tela, (0, 206, 209), tanque["posx"], tanque["posy"], largura_avatar, altura_avatar)
         
         if elementos.verifica_colisao(tanque["posy"], tanque["posx"], tanque["largura"], tanque["altura"], posicao_avatar_Y, posicao_avatar_X, largura_avatar, altura_avatar):
-            combustivel += 1
+            tanques.remove(tanque)
+            combustivel += 100
     
     projetil_para_remocao = []
 
@@ -325,7 +358,7 @@ while state_main_loop == True:
     # Remove inimigos atingidos por projéteis
     for inimigo in projetil_para_remocao:
         inimigos.remove(inimigo)
-        pontos += 1
+        pontos += 50
 
     # Remove projéteis que atingiram inimigos
     projetil_lista = [projetil for projetil in projetil_lista if projetil not in projetil_para_remocao]
