@@ -240,7 +240,7 @@ largura = 950 #largura do tabuleiro
 altura = 480 ## altura do tabuleiro
 clock = pygame.time.Clock()
 fps = 24 #valor inicial para o fps. Incrementa com o tempo
-combustivel = 600
+combustivel = 400
 pontos = 0
 velocidade = 20
 distancia_minima_entre_objetos = 100
@@ -307,6 +307,10 @@ gera_avatar()
 #Loop de jogo
 state_main_loop = True
 while state_main_loop == True:
+    
+
+
+    tela.fill((0,0,0))
     pontos_e_combustível()
     for i in inimigos:
         i["posx"] -= velocidade_inimigo
@@ -322,11 +326,11 @@ while state_main_loop == True:
     gera_avatar()
 
     for inimigo in inimigos:
+        #inimigo["posx"] -= velocidade_inimigo
+        #elementos.desenha_quadrado(tela, (255, 0, 0), inimigo["posx"], inimigo["posy"], inimigo["largura"], inimigo["altura"])
         if inimigo["posx"] < 5:
             inimigos.remove(inimigo)
-            print("inimigo removido")
         elementos.desenha_quadrado(tela,(255,0,0),inimigo["posx"],inimigo["posy"],inimigo["largura"],inimigo["altura"])
-        print("inimigo desenhado")
         if elementos.verifica_colisao_entre_rects(retangulo_referencia_A, pygame.Rect(inimigo["posx"], inimigo["posy"], inimigo["largura"], inimigo["altura"])):
                 storeScore(str(pontos))
                 tela.fill((0,0,0))
@@ -358,7 +362,7 @@ while state_main_loop == True:
     # Remove inimigos atingidos por projéteis
     for inimigo in projetil_para_remocao:
         inimigos.remove(inimigo)
-        pontos += 50
+        pontos += 4
 
     # Remove projéteis que atingiram inimigos
     projetil_lista = [projetil for projetil in projetil_lista if projetil not in projetil_para_remocao]
@@ -390,6 +394,7 @@ while state_main_loop == True:
             elif event.key == K_t:
                 projetil = pygame.Rect(retangulo_referencia_A.right, retangulo_referencia_A.centery - 10, 10, 10)
                 projetil_lista.append(projetil)
+                combustivel-= 3
 
     pygame.display.flip()           
     pygame.display.update()
