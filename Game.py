@@ -149,7 +149,7 @@ def reiniciar_jogo():
 
     posicao_inimigo_X = 940
     posicao_inimigo_Y = random.randrange(100,480)
-    velocidade_inimigo = 4
+    velocidade_inimigo = 1
     largura_inimigo = 20
     altura_inimigo = 20
 
@@ -216,7 +216,7 @@ def aparicao_objetos():
    for i in inimigos:
         i["posx"] -= velocidade_inimigo
 
-   if random.randint(0, 10) > 2:
+   if random.randint(0, 10000) < 1000 :
         novo_inimigo = {"posx": 940, "posy": random.randint(50, altura_janela - altura_inimigo), "altura": altura_inimigo, "largura": largura_inimigo}
         if all(elementos.distancia_minima(novo_inimigo, inimigo, distancia_minima_entre_objetos) for inimigo in inimigos):
             if len(inimigos) < 20:
@@ -226,7 +226,7 @@ def aparicao_objetos():
                 inimigos.remove(inimigos[len(inimigos)-1])
 
             
-   elif random.randint(0, 10)> 8:
+   elif random.randint(0, 10000) < 50:
         novo_tanque = {"posx": 940, "posy": random.randint(50, altura_janela - altura_inimigo), "altura": altura_avatar, "largura": largura_avatar}
         if all(elementos.distancia_minima(novo_tanque, tanque_de_combustivel, distancia_minima_entre_objetos) for tanque_de_combustivel in tanques):
             tanques.append(novo_tanque)
@@ -256,7 +256,7 @@ velocidade_tanque_de_combustivel = 2
 inimigos = []
 posicao_inimigo_X = 940
 posicao_inimigo_Y = random.randrange(100,480)
-velocidade_inimigo = 4
+velocidade_inimigo = 1
 largura_inimigo = 20
 altura_inimigo = 20
 
@@ -342,7 +342,7 @@ while state_main_loop == True:
                 
 
     for tanque in tanques:
-        print("tanque")
+        
         elementos.desenha_quadrado(tela, (0, 206, 209), tanque["posx"], tanque["posy"], largura_avatar, altura_avatar)
         
         if elementos.verifica_colisao(tanque["posy"], tanque["posx"], tanque["largura"], tanque["altura"], posicao_avatar_Y, posicao_avatar_X, largura_avatar, altura_avatar):
